@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>unity基础学习9 | 我的博客</title><meta name="author" content="YKK"><meta name="copyright" content="YKK"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1.角色控制器 添加Character Controller组件 SimpleMove有重力，Move无重力 2.重力添加rigidbody组件实现物理效果  Is Kinematic勾选会取消物理效果，碰撞检测决定检测的频率，离散最小，冻结会固定物体的位置和旋转 3.碰撞检测  火焰物体触碰到地面产生爆炸。 爆炸效果一直存在，所以在爆炸预制件上添加脚本控制爆炸时间，超过一定时间销毁爆炸 4.触发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unity基础学习9">
+<meta property="og:url" content="http://example.com/2024/10/09/unity9/index.html">
+<meta property="og:site_name" content="我的博客">
+<meta property="og:description" content="1.角色控制器 添加Character Controller组件 SimpleMove有重力，Move无重力 2.重力添加rigidbody组件实现物理效果  Is Kinematic勾选会取消物理效果，碰撞检测决定检测的频率，离散最小，冻结会固定物体的位置和旋转 3.碰撞检测  火焰物体触碰到地面产生爆炸。 爆炸效果一直存在，所以在爆炸预制件上添加脚本控制爆炸时间，超过一定时间销毁爆炸 4.触发">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-10-09T09:22:43.000Z">
+<meta property="article:modified_time" content="2024-10-11T08:44:21.482Z">
+<meta property="article:author" content="YKK">
+<meta property="article:tag" content="学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/10/09/unity9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'unity基础学习9',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-11 16:44:21'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="我的博客"><span class="site-name">我的博客</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">unity基础学习9</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-09T09:22:43.000Z" title="发表于 2024-10-09 17:22:43">2024-10-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-11T08:44:21.482Z" title="更新于 2024-10-11 16:44:21">2024-10-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/unity/">unity</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="unity基础学习9"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="1-角色控制器"><a href="#1-角色控制器" class="headerlink" title="1.角色控制器"></a>1.角色控制器</h3><p><img src="https://pic.imgdb.cn/item/67065408d29ded1a8c9420e1.png"></p>
+<p>添加Character Controller组件</p>
+<p>SimpleMove有重力，Move无重力</p>
+<h3 id="2-重力"><a href="#2-重力" class="headerlink" title="2.重力"></a>2.重力</h3><p>添加rigidbody组件实现物理效果</p>
+<p><img src="https://pic.imgdb.cn/item/6707806dd29ded1a8c8a0db0.png"></p>
+<p>Is Kinematic勾选会取消物理效果，碰撞检测决定检测的频率，离散最小，冻结会固定物体的位置和旋转</p>
+<h3 id="3-碰撞检测"><a href="#3-碰撞检测" class="headerlink" title="3.碰撞检测"></a>3.碰撞检测</h3><p><img src="https://pic.imgdb.cn/item/67078a4ed29ded1a8c94f1a1.png"></p>
+<p><img src="https://pic.imgdb.cn/item/67078a5bd29ded1a8c9500c7.png"></p>
+<p>火焰物体触碰到地面产生爆炸。</p>
+<p>爆炸效果一直存在，所以在爆炸预制件上添加脚本控制爆炸时间，超过一定时间销毁爆炸</p>
+<h3 id="4-触发"><a href="#4-触发" class="headerlink" title="4.触发"></a>4.触发</h3><p>在collider中勾选触发器，将碰撞体变为触发器</p>
+<p><img src="https://pic.imgdb.cn/item/67079105d29ded1a8c9c68b8.png"></p>
+<p>与碰撞类似，但一个为Collision包括物体的各种信息，一个为Collider。</p>
+<h3 id="5-物理关节"><a href="#5-物理关节" class="headerlink" title="5.物理关节"></a>5.物理关节</h3><p>Hinge Joint锁链关节，物体中心为0点，长宽高均为1，以此设置Anchor</p>
+<p>Spring Joint弹簧，连接的两个物体都应有刚体，将物体拖到Connected body上</p>
+<p>Fixed Joint固定，将两个物体固定到一起以及受力分离</p>
+<h3 id="6-物理材质"><a href="#6-物理材质" class="headerlink" title="6.物理材质"></a>6.物理材质</h3><p>新建物理材质拖到Collider上，控制物理材质的动静摩擦反弹等，两个物体之间的摩擦由物理材质控制</p>
+<p><img src="https://pic.imgdb.cn/item/6708d97fd29ded1a8c936fba.png"></p>
+<h3 id="7-射线检测"><a href="#7-射线检测" class="headerlink" title="7.射线检测"></a>7.射线检测</h3><p>点击三维的一个点实质为点击相机前的一个平面的点，由点向前发射射线到三维物体上</p>
+<p><img src="https://pic.imgdb.cn/item/6708e464d29ded1a8c9f4795.png"></p>
+<p>发射的射线碰撞到物体，将碰撞信息传到hit上</p>
+<p>多检测碰撞信息为数组类型，100检测距离，1&lt;&lt;10二进制左移运算代表第十图层</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">YKK</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/10/09/unity9/">http://example.com/2024/10/09/unity9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">我的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/10/11/unity10/" title="unity10"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">unity10</div></div></a></div><div class="next-post pull-right"><a href="/2024/10/08/unity8/" title="unity基础学习8-光照和摄像机、声音和视频"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">unity基础学习8-光照和摄像机、声音和视频</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/09/25/unity1/" title="unity基础学习1-模型与地形"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-25</div><div class="title">unity基础学习1-模型与地形</div></div></a></div><div><a href="/2024/10/11/unity10/" title="unity10"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-11</div><div class="title">unity10</div></div></a></div><div><a href="/2024/09/27/unity3/" title="unity基础学习3-标签与预制件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-27</div><div class="title">unity基础学习3-标签与预制件</div></div></a></div><div><a href="/2024/09/26/unity2/" title="unity基础学习2-组件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-26</div><div class="title">unity基础学习2-组件</div></div></a></div><div><a href="/2024/10/02/unity4/" title="unity基础学习4-vector"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-02</div><div class="title">unity基础学习4-vector</div></div></a></div><div><a href="/2024/10/04/unity5/" title="unity基础学习5-Debug、物体类、时间、application"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-04</div><div class="title">unity基础学习5-Debug、物体类、时间、application</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YKK</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">1.角色控制器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%87%8D%E5%8A%9B"><span class="toc-number">2.</span> <span class="toc-text">2.重力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">3.</span> <span class="toc-text">3.碰撞检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%A7%A6%E5%8F%91"><span class="toc-number">4.</span> <span class="toc-text">4.触发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%89%A9%E7%90%86%E5%85%B3%E8%8A%82"><span class="toc-number">5.</span> <span class="toc-text">5.物理关节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%89%A9%E7%90%86%E6%9D%90%E8%B4%A8"><span class="toc-number">6.</span> <span class="toc-text">6.物理材质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B"><span class="toc-number">7.</span> <span class="toc-text">7.射线检测</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/11/unity10/" title="unity10">unity10</a><time datetime="2024-10-11T08:56:33.000Z" title="发表于 2024-10-11 16:56:33">2024-10-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/09/unity9/" title="unity基础学习9">unity基础学习9</a><time datetime="2024-10-09T09:22:43.000Z" title="发表于 2024-10-09 17:22:43">2024-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/08/unity8/" title="unity基础学习8-光照和摄像机、声音和视频">unity基础学习8-光照和摄像机、声音和视频</a><time datetime="2024-10-08T09:00:36.000Z" title="发表于 2024-10-08 17:00:36">2024-10-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/08/unity7/" title="unity基础学习7-按键输入">unity基础学习7-按键输入</a><time datetime="2024-10-08T07:27:41.000Z" title="发表于 2024-10-08 15:27:41">2024-10-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/04/unity6/" title="unity基础学习6-场景">unity基础学习6-场景</a><time datetime="2024-10-04T09:15:41.000Z" title="发表于 2024-10-04 17:15:41">2024-10-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By YKK</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
